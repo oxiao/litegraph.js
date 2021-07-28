@@ -1,0 +1,115 @@
+Creating custom Nodes
+Hermann Plass edited this page on Feb 23, 2018 · 6 revisions
+Here will only explain some of the basics, if you want to explore more functionalities consider visiting the documentation about the LGraphNode class.
+
+Lets work on an basic example, create a node type that sums two inputs. Start defining the inputs and outputs of your node. For this purpouse we got the addInput / addOutput method:
+
+addInput( {String}name, {String}type, {Object}extra_info)
+
+// Your Custom Node class constructor 
+function MyAddNode() {
+    this.addInput("A", "number");
+    this.addInput("B", "number");
+    this.addOutput("A+B", "number");
+}
+The main difference between inputs and outputs is that an input can only have one connection link while outputs could have several.
+
+some of the basic supported types are:
+
+["*", "boolean", "number", "array", "vec2", "vec3", "vec4", "image", "Texture", "audio", 0 (if its a generic type)]
+
+the extra_info can be used to have special properties of an input
+
+ { name:string, type:string, pos: [x,y]=Optional, direction: "input"|"output", links: Array }); 
+
+
+
+We can define some properties about our new Node like the title, the position or the size:
+
+//name to show
+MyAddNode.title = "Sum";
+MyAddNode.position = [10, 50];
+MyAddNode.size = [300, 50];
+
+
+
+Next, how this Node will behave, the way to do this is setting a "onExecute" callback function to our Node class to do any required callculation when triggered:
+
+MyAddNode.prototype.onExecute = function() {
+    var A = this.getInputData(0);
+    if (A === undefined)
+        A = 0;
+    var B = this.getInputData(1);
+    if (B === undefined)
+        B = 0;
+    this.setOutputData(0, A + B);
+}
+Check the list of the supported callbacks that can be deffined
+
+Execution phases:
+
+onAdded: when added to graph
+onRemoved: when removed from graph
+onStart: when the graph starts playing
+onStop: when the graph stops playing
+onExecute: execute the node
+Drawing:
+
+onDrawForeground: render the inside widgets inside the node
+onDrawBackground: render the background area inside the node (only in edit mode)
+Interacting with nodes
+
+onMouseDown
+onMouseUp
+onDblClick
+onMouseMove
+onMouseEnter
+onMouseLeave
+onSelected
+onDeselected
+onDropItem : DOM item dropped over the node
+onDropFile : file dropped over the node
+onConnectInput : if returns false the incoming connection will be canceled
+onConnectionsChange : a connection changed (new one or removed) (LiteGraph.INPUT or LiteGraph.OUTPUT, slot, true if connected, link_info, input_info )
+Value based
+
+onGetInputs: returns an array of possible inputs
+onGetOutputs: returns an array of possible outputs
+onPropertyChanged: when a property is changed in the panel (return true to skip default behaviour)
+onSerialize
+
+At last, we need to register our new Node class so it can be instanced onto a graph:
+
+//register in the system
+LiteGraph.registerNodeType("basic/sum", MyAddNode);
+Here is the full example:
+
+//node constructor class
+function MyAddNode() {
+
+    this.addInput("A", "number");
+    this.addInput("B", "number");
+    this.addOutput("A+B", "number");
+}
+
+//name to show
+MyAddNode.title = "Sum";
+MyAddNode.position = [10, 50];
+MyAddNode.size = [300, 50];
+
+//function to call when the node is executed
+MyAddNode.prototype.onExecute = function() {
+    var A = this.getInputData(0);
+    if (A === undefined)
+        A = 0;
+    var B = this.getInputData(1);
+    if (B === undefined)
+        B = 0;
+    this.setOutputData(0, A + B);
+}
+
+//register in the system
+LiteGraph.registerNodeType("basic/sum", MyAddNode);
+Here is a list of the supported methods and properties for each node available:
+
+onInputAdded( {Object}options )

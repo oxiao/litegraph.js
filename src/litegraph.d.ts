@@ -36,7 +36,8 @@ export interface INodeSlot {
 }
 
 export interface INodeInputSlot extends INodeSlot {
-    link: LLink["id"] | null;
+    // link: LLink["id"] | null;
+    links: LLink["id"][] | null;
 }
 export interface INodeOutputSlot extends INodeSlot {
     links: LLink["id"][] | null;

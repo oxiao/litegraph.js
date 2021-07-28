@@ -313,21 +313,23 @@
 				for(var j = 0; j < node.inputs.length; ++j)
 				{
 					var input = node.inputs[j];
-					if( !input || !input.link )
+					if( !input || !input.links )
 						continue;
-					var link = node.graph.links[ input.link ];
-					if(!link)
-						continue;
-					if( ids[ link.origin_id ] )
-						continue;
-					//this.addInput(input.name,link.type);
-					this.subgraph.addInput(input.name,link.type);
-					/*
-					var input_node = LiteGraph.createNode("graph/input");
-					this.subgraph.add( input_node );
-					input_node.pos = [min_x - 200, last_input_y ];
-					last_input_y += 100;
-					*/
+                    for (let m = 0; m < input.links.length; m ++) {
+                        var link = node.graph.links[ input.links[m] ];
+                        if(!link)
+                            continue;
+                        if( ids[ link.origin_id ] )
+                            continue;
+                        //this.addInput(input.name,link.type);
+                        this.subgraph.addInput(input.name,link.type);
+                        /*
+                        var input_node = LiteGraph.createNode("graph/input");
+                        this.subgraph.add( input_node );
+                        input_node.pos = [min_x - 200, last_input_y ];
+                        last_input_y += 100;
+                        */
+                    }
 				}
 
 			//check outputs

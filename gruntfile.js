@@ -7,12 +7,17 @@ module.exports = function (grunt) {
       'src/nodes/interface.js',
       'src/nodes/input.js',
       'src/nodes/math.js',
+      'src/nodes/math3d.js',
       'src/nodes/logic.js',
       'src/nodes/image.js',
       'src/nodes/gltextures.js',
       'src/nodes/glfx.js',
+      'src/nodes/glshaders.js',
       'src/nodes/midi.js',
       'src/nodes/audio.js',
+      'src/nodes/graphics.js',
+      'src/nodes/geometry.js',
+      'src/nodes/strings.js',
       'src/nodes/network.js'
     ],
     concat: {
